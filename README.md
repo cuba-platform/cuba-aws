@@ -42,6 +42,8 @@ CUBA Amazon Add-on enables using supported AWS services, for now it supports:
 
  * **cuba.amazonS3.chunkSize** (optional): Amazon S3 chunk size
 
+ * **cuba.amazonS3.endpoint** (optional): Custom Endpoint for S3. Useful for S3 compatible S3 storage
+
  **Example:**
  ```ini
  cuba.amazonS3.accessKey = AAAABBBBCCCCDD11CC22
@@ -50,3 +52,12 @@ CUBA Amazon Add-on enables using supported AWS services, for now it supports:
  cuba.amazonS3.bucket = s3-ec2-test
  cuba.amazonS3.chunkSize = 5500
  ```
+
+ **Example for Yandex Cloud Object storage**
+ ```ini
+ cuba.amazonS3.accessKey = AAAABBBBCCCCDD11CC22
+ cuba.amazonS3.secretAccessKey = AbCD+eFFGK3iAB9Ca9BCAB7ddDDABcabCabc9aBC
+ cuba.amazonS3.region = ru-central1
+ cuba.amazonS3.bucket = test
+ cuba.amazonS3.chunkSize = 5500
+ cuba.amazonS3.endpoint = https://storage.yandexcloud.net

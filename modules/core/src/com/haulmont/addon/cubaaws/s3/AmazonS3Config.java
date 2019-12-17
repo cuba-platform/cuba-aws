@@ -21,6 +21,7 @@ import com.haulmont.cuba.core.config.Property;
 import com.haulmont.cuba.core.config.Source;
 import com.haulmont.cuba.core.config.SourceType;
 import com.haulmont.cuba.core.config.defaults.DefaultInt;
+import com.haulmont.cuba.core.config.defaults.DefaultString;
 import com.haulmont.cuba.core.global.Secret;
 
 /**
@@ -60,4 +61,15 @@ public interface AmazonS3Config extends Config {
     @Property("cuba.amazonS3.chunkSize")
     @DefaultInt(8192)
     int getChunkSize();
+
+    /**
+     * @return Return custom S3 storage endpoint url
+     */
+    @Property("cuba.amazonS3.endpoint")
+    @DefaultString("")
+    String getEndPoint();
+
+
+
+
 }
