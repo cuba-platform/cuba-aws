@@ -39,9 +39,9 @@ The add-on corresponding to the used platform version will be installed.
 
 4. Paste the add-on coordinates in the corresponding field as follows:
 
-  com.haulmont.addon.cubaaws:cubaaws-global:<add-on version>
+   `com.haulmont.addon.cubaaws:cubaaws-global:<add-on version>`
 
-  where <add-on version> is compatible with the used version of the CUBA platform.
+   where `<add-on version>` is compatible with the used version of the CUBA platform.
 
   | Platform Version | Add-on Version |
 |------------------|----------------|
