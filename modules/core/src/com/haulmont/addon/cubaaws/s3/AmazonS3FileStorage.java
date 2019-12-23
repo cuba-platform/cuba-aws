@@ -180,6 +180,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     public boolean fileExists(FileDescriptor fileDescr) {
         ListObjectsV2Request listObjectsReqManual = ListObjectsV2Request.builder()
                 .bucket(getBucket())
+                .prefix(resolveFileName(fileDescr))
                 .maxKeys(1)
                 .build();
         ListObjectsV2Response listObjResponse = s3Client.listObjectsV2(listObjectsReqManual);
