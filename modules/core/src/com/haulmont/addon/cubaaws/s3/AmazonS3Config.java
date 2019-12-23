@@ -65,9 +65,9 @@ public interface AmazonS3Config extends Config {
     /**
      * @return Return custom S3 storage endpoint url
      */
-    @Property("cuba.amazonS3.endpoint")
+    @Property("cuba.amazonS3.endpointUrl")
     @DefaultString("")
-    String getEndPoint();
+    String getEndpointUrl();
 
 
 

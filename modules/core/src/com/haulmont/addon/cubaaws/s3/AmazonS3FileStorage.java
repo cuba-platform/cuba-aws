@@ -51,7 +51,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     @EventListener
     protected void initS3Client(AppContextStartedEvent event) {
         AwsCredentialsProvider awsCredentialsProvider = getAwsCredentialsProvider();
-        if (amazonS3Config.getEndPoint().isEmpty()) {
+        if (amazonS3Config.getEndpointUrl().isEmpty()) {
             s3Client = S3Client.builder()
                     .credentialsProvider(awsCredentialsProvider)
                     .region(Region.of(getRegionName()))
@@ -59,7 +59,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
         } else {
             s3Client = S3Client.builder()
                     .credentialsProvider(awsCredentialsProvider)
-                    .endpointOverride(URI.create(amazonS3Config.getEndPoint()))
+                    .endpointOverride(URI.create(amazonS3Config.getEndpointUrl()))
                     .region(Region.of(getRegionName()))
                     .build();
         }
