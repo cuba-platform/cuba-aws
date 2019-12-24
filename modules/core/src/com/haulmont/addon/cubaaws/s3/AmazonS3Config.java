@@ -63,13 +63,9 @@ public interface AmazonS3Config extends Config {
     int getChunkSize();
 
     /**
-     * @return Return custom S3 storage endpoint url
+     * @return Return custom S3 storage endpoint URL
      */
     @Property("cuba.amazonS3.endpointUrl")
     @DefaultString("")
     String getEndpointUrl();
-
-
-
-
 }

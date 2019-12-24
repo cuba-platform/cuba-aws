@@ -17,6 +17,7 @@
 package com.haulmont.addon.cubaaws.s3;
 
 
+import com.google.common.base.Strings;
 import com.haulmont.bali.util.Preconditions;
 import com.haulmont.cuba.core.app.FileStorageAPI;
 import com.haulmont.cuba.core.entity.FileDescriptor;
@@ -51,7 +52,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     @EventListener
     protected void initS3Client(AppContextStartedEvent event) {
         AwsCredentialsProvider awsCredentialsProvider = getAwsCredentialsProvider();
-        if (amazonS3Config.getEndpointUrl().isEmpty()) {
+        if (Strings.isNullOrEmpty(amazonS3Config.getEndpointUrl())) {
             s3Client = S3Client.builder()
                     .credentialsProvider(awsCredentialsProvider)
                     .region(Region.of(getRegionName()))
