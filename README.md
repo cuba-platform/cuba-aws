@@ -69,7 +69,7 @@ The add-on corresponding to the used platform version will be installed.
 
  * `cuba.amazonS3.chunkSize` - Amazon S3 chunk size.
  
- * `cuba.amazonS3.endpointUrl` (optional): Endpoint URL for Amazon S3 compatible storages.
+ * `cuba.amazonS3.endpointUrl` (optional) - Endpoint URL for Amazon S3 compatible storages.
 
  The `accessKey` and `secretAccessKey` should be those of your AWS IAM user account, not the AWS account itself. You can find the correct credentials on the *Users* tab of your AWS console.
 
