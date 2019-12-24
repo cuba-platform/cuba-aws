@@ -71,6 +71,8 @@ The add-on corresponding to the used platform version will be installed.
 
  The `accessKey` and `secretAccessKey` should be those of your AWS IAM user account, not the AWS account itself. You can find the correct credentials on the *Users* tab of your AWS console.
 
+ * **cuba.amazonS3.endpoint** (optional): Custom Endpoint for S3. Useful for S3 compatible S3 storage
+
  **Example:**
  ```properties
  cuba.amazonS3.accessKey = AAAABBBBCCCCDD11CC22
@@ -79,3 +81,13 @@ The add-on corresponding to the used platform version will be installed.
  cuba.amazonS3.bucket = s3-ec2-test
  cuba.amazonS3.chunkSize = 5500
  ```
+
+ **Example for Yandex Cloud Object storage**
+ ```ini
+ cuba.amazonS3.accessKey = AAAABBBBCCCCDD11CC22
+ cuba.amazonS3.secretAccessKey = AbCD+eFFGK3iAB9Ca9BCAB7ddDDABcabCabc9aBC
+ cuba.amazonS3.region = ru-central1
+ cuba.amazonS3.bucket = test
+ cuba.amazonS3.chunkSize = 5500
+ cuba.amazonS3.endpoint = https://storage.yandexcloud.net
+

@@ -36,6 +36,7 @@ import software.amazon.awssdk.services.s3.model.*;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,10 +51,18 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     @EventListener
     protected void initS3Client(AppContextStartedEvent event) {
         AwsCredentialsProvider awsCredentialsProvider = getAwsCredentialsProvider();
-        s3Client = S3Client.builder()
-                .credentialsProvider(awsCredentialsProvider)
-                .region(Region.of(getRegionName()))
-                .build();
+        if (amazonS3Config.getEndpointUrl().isEmpty()) {
+            s3Client = S3Client.builder()
+                    .credentialsProvider(awsCredentialsProvider)
+                    .region(Region.of(getRegionName()))
+                    .build();
+        } else {
+            s3Client = S3Client.builder()
+                    .credentialsProvider(awsCredentialsProvider)
+                    .endpointOverride(URI.create(amazonS3Config.getEndpointUrl()))
+                    .region(Region.of(getRegionName()))
+                    .build();
+        }
     }
 
     protected AwsCredentialsProvider getAwsCredentialsProvider() {
@@ -171,6 +180,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     public boolean fileExists(FileDescriptor fileDescr) {
         ListObjectsV2Request listObjectsReqManual = ListObjectsV2Request.builder()
                 .bucket(getBucket())
+                .prefix(resolveFileName(fileDescr))
                 .maxKeys(1)
                 .build();
         ListObjectsV2Response listObjResponse = s3Client.listObjectsV2(listObjectsReqManual);
