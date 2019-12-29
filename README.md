@@ -3,9 +3,7 @@
 
 # Overview
 
-CUBA Amazon add-on enables using supported AWS services, for now it supports:
-
-* Amazon Simple Storage Service (S3).
+CUBA AWS add-on enables using Amazon Simple Storage Service (S3) and compatible services.
 
 # Installation
 
