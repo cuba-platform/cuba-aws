@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '7.2-SNAPSHOT'
+    ext.cubaVersion = rootProject.hasProperty('cubaVersion') ? rootProject['cubaVersion'] : '7.2-SNAPSHOT'
     repositories {
         if (System.getenv('HAULMONT_REPOSITORY_URL')) {
             maven {
@@ -49,7 +49,7 @@ apply(plugin: 'addon-gradle-plugin')
 cuba {
     artifact {
         group = 'com.haulmont.addon.cubaaws'
-        version = '0.1'
+        version = '1.0'
         isSnapshot = true
     }
     tomcat {
