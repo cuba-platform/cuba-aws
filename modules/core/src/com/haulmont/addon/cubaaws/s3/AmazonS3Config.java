@@ -27,7 +27,7 @@ import com.haulmont.cuba.core.global.Secret;
 /**
  * Configuration parameters interface used by cubaaws add-on.
  */
-@Source(type = SourceType.APP)
+@Source(type = SourceType.DATABASE)
 public interface AmazonS3Config extends Config {
 
     /**
