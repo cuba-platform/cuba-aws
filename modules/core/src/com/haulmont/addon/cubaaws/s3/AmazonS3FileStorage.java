@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.haulmont.bali.util.Preconditions.checkNotNullArgument;
@@ -47,7 +48,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     @Inject
     protected AmazonS3Config amazonS3Config;
 
-    protected S3Client s3Client;
+    protected AtomicReference<S3Client> s3ClientReference = new AtomicReference<>();
 
     @EventListener
     protected void initS3Client(AppContextStartedEvent event) {
@@ -66,16 +67,16 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     public void refreshS3Client() {
         AwsCredentialsProvider awsCredentialsProvider = getAwsCredentialsProvider();
         if (Strings.isNullOrEmpty(amazonS3Config.getEndpointUrl())) {
-            s3Client = S3Client.builder()
+            s3ClientReference.set(S3Client.builder()
                     .credentialsProvider(awsCredentialsProvider)
                     .region(Region.of(getRegionName()))
-                    .build();
+                    .build());
         } else {
-            s3Client = S3Client.builder()
+            s3ClientReference.set(S3Client.builder()
                     .credentialsProvider(awsCredentialsProvider)
                     .endpointOverride(URI.create(amazonS3Config.getEndpointUrl()))
                     .region(Region.of(getRegionName()))
-                    .build();
+                    .build());
         }
     }
 
@@ -96,6 +97,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     public void saveFile(FileDescriptor fileDescr, byte[] data) throws FileStorageException {
         checkNotNullArgument(data, "File content is null");
         try {
+            S3Client s3Client = s3ClientReference.get();
             int chunkSize = amazonS3Config.getChunkSize() * 1024;
 
             CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
@@ -145,6 +147,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     @Override
     public void removeFile(FileDescriptor fileDescr) throws FileStorageException {
         try {
+            S3Client s3Client = s3ClientReference.get();
             DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                     .bucket(getBucket())
                     .key(resolveFileName(fileDescr))
@@ -160,6 +163,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     public InputStream openStream(FileDescriptor fileDescr) throws FileStorageException {
         InputStream is;
         try {
+            S3Client s3Client = s3ClientReference.get();
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(getBucket())
                     .key(resolveFileName(fileDescr))
@@ -183,6 +187,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
 
     @Override
     public boolean fileExists(FileDescriptor fileDescr) {
+        S3Client s3Client = s3ClientReference.get();
         ListObjectsV2Request listObjectsReqManual = ListObjectsV2Request.builder()
                 .bucket(getBucket())
                 .prefix(resolveFileName(fileDescr))
