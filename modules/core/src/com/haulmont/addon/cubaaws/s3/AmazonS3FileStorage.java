@@ -51,6 +51,19 @@ public class AmazonS3FileStorage implements FileStorageAPI {
 
     @EventListener
     protected void initS3Client(AppContextStartedEvent event) {
+        refreshS3Client();
+    }
+
+    protected AwsCredentialsProvider getAwsCredentialsProvider() {
+        if (getAccessKey() != null && getSecretAccessKey() != null) {
+            AwsCredentials awsCredentials = AwsBasicCredentials.create(getAccessKey(), getSecretAccessKey());
+            return StaticCredentialsProvider.create(awsCredentials);
+        } else {
+            return DefaultCredentialsProvider.builder().build();
+        }
+    }
+
+    public void refreshS3Client() {
         AwsCredentialsProvider awsCredentialsProvider = getAwsCredentialsProvider();
         if (Strings.isNullOrEmpty(amazonS3Config.getEndpointUrl())) {
             s3Client = S3Client.builder()
@@ -63,15 +76,6 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                     .endpointOverride(URI.create(amazonS3Config.getEndpointUrl()))
                     .region(Region.of(getRegionName()))
                     .build();
-        }
-    }
-
-    protected AwsCredentialsProvider getAwsCredentialsProvider() {
-        if (getAccessKey() != null && getSecretAccessKey() != null) {
-            AwsCredentials awsCredentials = AwsBasicCredentials.create(getAccessKey(), getSecretAccessKey());
-            return StaticCredentialsProvider.create(awsCredentials);
-        } else {
-            return DefaultCredentialsProvider.create();
         }
     }
 
