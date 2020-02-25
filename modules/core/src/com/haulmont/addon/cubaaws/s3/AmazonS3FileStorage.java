@@ -27,7 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.event.EventListener;
 import software.amazon.awssdk.auth.credentials.*;
-import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
@@ -132,7 +132,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                             .uploadId(response.uploadId())
                             .multipartUpload(completedMultipartUpload).build();
             s3Client.completeMultipartUpload(completeMultipartUploadRequest);
-        } catch (SdkClientException e) {
+        } catch (SdkException e) {
             String message = String.format("Could not save file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
@@ -153,7 +153,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                     .key(resolveFileName(fileDescr))
                     .build();
             s3Client.deleteObject(deleteObjectRequest);
-        } catch (SdkClientException e) {
+        } catch (SdkException e) {
             String message = String.format("Could not delete file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
@@ -169,7 +169,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                     .key(resolveFileName(fileDescr))
                     .build();
             is = s3Client.getObject(getObjectRequest, ResponseTransformer.toInputStream());
-        } catch (SdkClientException e) {
+        } catch (SdkException e) {
             String message = String.format("Could not load file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
@@ -225,10 +225,6 @@ public class AmazonS3FileStorage implements FileStorageAPI {
         } else {
             return fileDescriptor.getId().toString();
         }
-    }
-
-    protected String getS3StorageClass() {
-        return "REDUCED_REDUNDANCY";
     }
 
     protected String getRegionName() {
