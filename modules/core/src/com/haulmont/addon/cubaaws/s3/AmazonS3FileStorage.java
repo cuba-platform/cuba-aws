@@ -220,10 +220,21 @@ public class AmazonS3FileStorage implements FileStorageAPI {
     }
 
     protected String getFileName(FileDescriptor fileDescriptor) {
-        if (StringUtils.isNotBlank(fileDescriptor.getExtension())) {
-            return fileDescriptor.getId().toString() + "." + fileDescriptor.getExtension();
-        } else {
-            return fileDescriptor.getId().toString();
+        if (StringUtils.isNotBlank(fileDescriptor.getName()) {
+            if (StringUtils.isNotBlank(fileDescriptor.getExtension())) {
+                return fileDescriptor.getName() + "." + fileDescriptor.getExtension();
+            } 
+            else {
+                return fileDescriptor.getName();
+            }
+        }
+        else {
+            if (StringUtils.isNotBlank(fileDescriptor.getExtension())) {
+                return fileDescriptor.getId().toString() + "." + fileDescriptor.getExtension();
+            } 
+            else {
+                return fileDescriptor.getId().toString();
+            }
         }
     }
 
