@@ -52,7 +52,7 @@ public class AmazonS3FileStorageTest {
         fileDescr2.setName("AmazonFileStorageTest");
 
         fileStorageAPI = new AmazonS3FileStorage();
-        fileStorageAPI.amazonS3Config = AppBeans.get(Configuration.class).getConfig(AmazonS3Config.class);
+        fileStorageAPI.googleCloudStorageConfig = AppBeans.get(Configuration.class).getConfig(GoogleCloudStorageConfig.class);
     }
 
     @Test

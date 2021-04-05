@@ -20,52 +20,22 @@ import com.haulmont.cuba.core.config.Config;
 import com.haulmont.cuba.core.config.Property;
 import com.haulmont.cuba.core.config.Source;
 import com.haulmont.cuba.core.config.SourceType;
-import com.haulmont.cuba.core.config.defaults.DefaultInt;
-import com.haulmont.cuba.core.config.defaults.DefaultString;
-import com.haulmont.cuba.core.global.Secret;
 
 /**
  * Configuration parameters interface used by cubaaws add-on.
  */
 @Source(type = SourceType.DATABASE)
-public interface AmazonS3Config extends Config {
+public interface GoogleCloudStorageConfig extends Config {
 
     /**
-     * @return Amazon S3 access key.
+     * @return Google Cloud Storage project id.
      */
-    @Property("cuba.amazonS3.accessKey")
-    String getAccessKey();
+    @Property("cuba.gcs.projectId")
+    String getProjectId();
 
     /**
-     * @return Amazon S3 secret access key.
+     * @return Google Cloud Storage bucket name.
      */
-    @Secret
-    @Property("cuba.amazonS3.secretAccessKey")
-    String getSecretAccessKey();
-
-    /**
-     * @return Amazon S3 region.
-     */
-    @Property("cuba.amazonS3.region")
-    String getRegionName();
-
-    /**
-     * @return Amazon S3 bucket name.
-     */
-    @Property("cuba.amazonS3.bucket")
+    @Property("cuba.gcs.bucket")
     String getBucket();
-
-    /**
-     * @return Amazon S3 chunk size.
-     */
-    @Property("cuba.amazonS3.chunkSize")
-    @DefaultInt(8192)
-    int getChunkSize();
-
-    /**
-     * @return Return custom S3 storage endpoint URL
-     */
-    @Property("cuba.amazonS3.endpointUrl")
-    @DefaultString("")
-    String getEndpointUrl();
 }
