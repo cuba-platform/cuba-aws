@@ -25,6 +25,8 @@ import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.core.sys.events.AppContextStartedEvent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -45,6 +47,9 @@ import java.util.stream.Collectors;
 import static com.haulmont.bali.util.Preconditions.checkNotNullArgument;
 
 public class AmazonS3FileStorage implements FileStorageAPI {
+
+    private static final Logger log = LoggerFactory.getLogger(AmazonS3FileStorage.class);
+
     @Inject
     protected AmazonS3Config amazonS3Config;
 
@@ -88,7 +93,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
         } catch (IOException e) {
             String message = String.format("Could not save file %s.",
                     getFileName(fileDescr));
-            throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
+            throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message, e);
         }
         return fileDescr.getSize();
     }
@@ -133,6 +138,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                             .multipartUpload(completedMultipartUpload).build();
             s3Client.completeMultipartUpload(completeMultipartUploadRequest);
         } catch (SdkException e) {
+            log.error("Error saving file to S3 storage", e);
             String message = String.format("Could not save file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
@@ -154,6 +160,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                     .build();
             s3Client.deleteObject(deleteObjectRequest);
         } catch (SdkException e) {
+            log.error("Error removing file from S3 storage", e);
             String message = String.format("Could not delete file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
@@ -170,6 +177,7 @@ public class AmazonS3FileStorage implements FileStorageAPI {
                     .build();
             is = s3Client.getObject(getObjectRequest, ResponseTransformer.toInputStream());
         } catch (SdkException e) {
+            log.error("Error loading file from S3 storage", e);
             String message = String.format("Could not load file %s.", getFileName(fileDescr));
             throw new FileStorageException(FileStorageException.Type.IO_EXCEPTION, message);
         }
