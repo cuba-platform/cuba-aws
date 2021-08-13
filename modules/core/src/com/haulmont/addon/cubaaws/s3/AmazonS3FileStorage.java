@@ -105,6 +105,14 @@ public class AmazonS3FileStorage implements FileStorageAPI {
             S3Client s3Client = s3ClientReference.get();
             int chunkSize = amazonS3Config.getChunkSize() * 1024;
 
+            if (data.length == 0) {
+                s3Client.putObject(PutObjectRequest.builder()
+                        .bucket(getBucket())
+                        .key(resolveFileName(fileDescr))
+                        .build(), RequestBody.fromBytes(data));
+                return;
+            }
+
             CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
                     .bucket(getBucket()).key(resolveFileName(fileDescr))
                     .build();
