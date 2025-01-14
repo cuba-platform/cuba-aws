@@ -61,7 +61,7 @@ dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def hsql = 'org.hsqldb:hsqldb:2.4.1'
+def hsql = 'org.hsqldb:hsqldb:2.5.2'
 
 configure([globalModule, coreModule, webModule]) {
     apply(plugin: 'java')
@@ -70,7 +70,21 @@ configure([globalModule, coreModule, webModule]) {
     apply(plugin: 'addon-gradle-plugin')
 
     dependencies {
-        compile('software.amazon.awssdk:s3:2.7.21')
+        compile('software.amazon.awssdk:s3:2.7.36')
+
+        def nettyVersion = '4.1.116.Final'
+        compile("io.netty:netty-codec-http:$nettyVersion")
+        compile("io.netty:netty-codec-http2:$nettyVersion")
+        compile("io.netty:netty-codec:$nettyVersion")
+        compile("io.netty:netty-transport:$nettyVersion")
+        compile("io.netty:netty-common:$nettyVersion")
+        compile("io.netty:netty-buffer:$nettyVersion")
+        compile("io.netty:netty-handler:$nettyVersion")
+        compile("io.netty:netty-transport-native-epoll:$nettyVersion")
+
+        compile('com.fasterxml.jackson.core:jackson-annotations:2.18.2')
+        compile('com.fasterxml.jackson.core:jackson-databind:2.18.2')
+
         testCompile('junit:junit:4.12')
     }
 
